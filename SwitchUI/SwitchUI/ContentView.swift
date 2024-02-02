@@ -29,7 +29,7 @@ struct ContentView: View {
 	var body: some View {
 		switch viewModel.currentState {
 		case .fail:
-			Text("Fail")
+			FailedLoginView()
 		case .success:
 			LoggedInView()
 		case .login:
@@ -97,6 +97,30 @@ struct LoggedInView: View {
 					.padding()
 				
 				Text("Congratulations, you are now logged in!")
+					.fontWeight(.semibold)
+			}
+		}
+	}
+}
+
+struct FailedLoginView: View {
+	
+	var body: some View {
+		ZStack {
+			Image(systemName: "x.square.fill")
+				.resizable()
+				.aspectRatio(contentMode: .fit)
+				.frame(width: 350)
+				.foregroundStyle(.red)
+				.opacity(0.1)
+			
+			VStack {
+				Text("Failed!")
+					.fontDesign(.monospaced)
+					.font(.largeTitle)
+					.padding()
+				
+				Text("You failed to log in, you will be terminated.")
 					.fontWeight(.semibold)
 			}
 		}
