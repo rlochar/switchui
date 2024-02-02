@@ -15,6 +15,12 @@ class MyViewModel: ObservableObject {
 	}
 	
 	var currentState: state = .login
+	
+	@Published var didLogin: Bool = true {
+		didSet {
+			currentState = didLogin ? .success : .fail
+		}
+	}
 }
 
 struct ContentView: View {
