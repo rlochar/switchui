@@ -31,7 +31,7 @@ struct ContentView: View {
 		case .fail:
 			Text("Fail")
 		case .success:
-			Text("Success")
+			LoggedInView()
 		case .login:
 			LoginView(isLoggedIn: $viewModel.didLogin)
 		}
@@ -78,3 +78,28 @@ struct LoginView: View {
 		}
 	}
 }
+
+struct LoggedInView: View {
+	
+	var body: some View {
+		ZStack {
+			Image(systemName: "checkmark.square.fill")
+				.resizable()
+				.aspectRatio(contentMode: .fit)
+				.frame(width: 350)
+				.foregroundStyle(.green)
+				.opacity(0.1)
+			
+			VStack {
+				Text("Success!")
+					.fontDesign(.monospaced)
+					.font(.largeTitle)
+					.padding()
+				
+				Text("Congratulations, you are now logged in!")
+					.fontWeight(.semibold)
+			}
+		}
+	}
+}
+
