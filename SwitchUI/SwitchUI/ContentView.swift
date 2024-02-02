@@ -7,8 +7,18 @@
 
 import SwiftUI
 
-struct ContentView: View {
+class MyViewModel: ObservableObject {
+	enum state {
+		case fail
+		case success
+		case login
+	}
 	
+	var currentState: state = .login
+}
+
+struct ContentView: View {
+	@StateObject var viewModel = MyViewModel()
 	
 	var body: some View {
 		VStack {
