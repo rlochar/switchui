@@ -21,13 +21,14 @@ struct ContentView: View {
 	@StateObject var viewModel = MyViewModel()
 	
 	var body: some View {
-		VStack {
-			Image(systemName: "globe")
-				.imageScale(.large)
-				.foregroundStyle(.tint)
-			Text("Hello, world!")
+		switch viewModel.currentState {
+		case .fail:
+			Text("Fail")
+		case .success:
+			Text("Success")
+		case .login:
+			Text("Login")
 		}
-		.padding()
 	}
 }
 
