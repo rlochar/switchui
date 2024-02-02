@@ -33,11 +33,48 @@ struct ContentView: View {
 		case .success:
 			Text("Success")
 		case .login:
-			Text("Login")
+			LoginView(isLoggedIn: $viewModel.didLogin)
 		}
 	}
 }
 
 #Preview {
 	ContentView()
+}
+
+struct LoginView: View {
+	@Binding var isLoggedIn: Bool
+	@State var username: String = ""
+	
+	var body: some View {
+		VStack {
+			Text("Welcome!")
+				.fontDesign(.monospaced)
+				.font(.largeTitle)
+				.padding()
+			
+			TextField("Username", text: $username)
+				.padding(.horizontal, 40)
+				.textFieldStyle(.roundedBorder)
+			TextField("Password", text: $username)
+				.padding(.horizontal, 40)
+				.textFieldStyle(.roundedBorder)
+			
+			HStack {
+				Button("Log in", action: {
+					isLoggedIn = true
+				})
+				.font(.title3)
+				.buttonStyle(.bordered)
+				.padding()
+				
+				Button("Fail", action: {
+					isLoggedIn = false
+				})
+				.font(.title3)
+				.buttonStyle(.bordered)
+				.padding()
+			}
+		}
+	}
 }
