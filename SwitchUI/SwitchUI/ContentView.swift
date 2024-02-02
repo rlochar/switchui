@@ -21,7 +21,14 @@ class MyViewModel: ObservableObject {
 			currentState = didLogin ? .success : .fail
 		}
 	}
+	
+	@Published var didGoBack: Bool = false {
+		didSet {
+			if didGoBack { currentState = .login }
+		}
+	}
 }
+
 
 struct ContentView: View {
 	@StateObject var viewModel = MyViewModel()
@@ -29,9 +36,9 @@ struct ContentView: View {
 	var body: some View {
 		switch viewModel.currentState {
 		case .fail:
-			FailedLoginView()
+			FailedLoginView(previousScreen: $viewModel.didGoBack)
 		case .success:
-			LoggedInView()
+			LoggedInView(previousScreen: $viewModel.didGoBack)
 		case .login:
 			LoginView(isLoggedIn: $viewModel.didLogin)
 		}
@@ -47,39 +54,49 @@ struct LoginView: View {
 	@State var username: String = ""
 	
 	var body: some View {
-		VStack {
-			Text("Welcome!")
-				.fontDesign(.monospaced)
-				.font(.largeTitle)
-				.padding()
+		ZStack {
+			Image(systemName: "square.fill")
+				.resizable()
+				.aspectRatio(contentMode: .fit)
+				.frame(width: 350)
+				.foregroundStyle(.indigo)
+				.opacity(0.1)
 			
-			TextField("Username", text: $username)
-				.padding(.horizontal, 40)
-				.textFieldStyle(.roundedBorder)
-			TextField("Password", text: $username)
-				.padding(.horizontal, 40)
-				.textFieldStyle(.roundedBorder)
-			
-			HStack {
-				Button("Log in", action: {
-					isLoggedIn = true
-				})
-				.font(.title3)
-				.buttonStyle(.bordered)
-				.padding()
+			VStack {
+				Text("Welcome!")
+					.fontDesign(.monospaced)
+					.font(.largeTitle)
+					.padding()
 				
-				Button("Fail", action: {
-					isLoggedIn = false
-				})
-				.font(.title3)
-				.buttonStyle(.bordered)
-				.padding()
+				TextField("Username", text: $username)
+					.padding(.horizontal, 40)
+					.textFieldStyle(.roundedBorder)
+				TextField("Password", text: $username)
+					.padding(.horizontal, 40)
+					.textFieldStyle(.roundedBorder)
+				
+				HStack {
+					Button("Log in", action: {
+						isLoggedIn = true
+					})
+					.font(.title3)
+					.buttonStyle(.bordered)
+					.padding()
+					
+					Button("Fail", action: {
+						isLoggedIn = false
+					})
+					.font(.title3)
+					.buttonStyle(.bordered)
+					.padding()
+				}
 			}
 		}
 	}
 }
 
 struct LoggedInView: View {
+	@Binding var previousScreen: Bool
 	
 	var body: some View {
 		ZStack {
@@ -98,12 +115,19 @@ struct LoggedInView: View {
 				
 				Text("Congratulations, you are now logged in!")
 					.fontWeight(.semibold)
+				
+				Button("Go back", action: {
+					previousScreen = true
+				})
+				.buttonStyle(.bordered)
+				.padding()
 			}
 		}
 	}
 }
 
 struct FailedLoginView: View {
+	@Binding var previousScreen: Bool
 	
 	var body: some View {
 		ZStack {
@@ -122,6 +146,12 @@ struct FailedLoginView: View {
 				
 				Text("You failed to log in, you will be terminated.")
 					.fontWeight(.semibold)
+				
+				Button("Go back", action: {
+					previousScreen = true
+				})
+				.buttonStyle(.bordered)
+				.padding()
 			}
 		}
 	}
