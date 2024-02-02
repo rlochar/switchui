@@ -51,4 +51,4 @@ case .success(let username): // ContentView
   LoggedInView(username: username)
 ...
 ```
-That would implicitly mean that when a `didSet { )` occur for `var didLogin` some value was retrieved and passed to the `.success` case.
+That would implicitly mean that when a `didSet { }` occur for `var didLogin` some value was retrieved and passed to the `.success` case.
